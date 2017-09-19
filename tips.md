@@ -72,5 +72,43 @@ getWindowH()
     myF,
   }
 ```
+## _2017/9/19_ ##
+### 微信小程序中的tarbar ###
+```javascript
+//在微信小程序中,若将某一页面设置在app.json的tarbar中，如
 
-![](.png) 
+//app.json
+"tabBar":{
+    "borderStyle":"white",
+    "selectedColor":"#294057",
+    "list":[
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath":"./tabBar_img/index.png",
+        "selectedIconPath":"./tabBar_img/index_on.png"
+      },
+    }
+    
+//则子页面中无法使用wx.navigateTo来进行跳转。而要使用
+  wx.switchTab({
+    url: '../index/index'
+  })
+```
+
+### git中关于remote的操作 ###
+```bash
+  git remote -v #查看连接的远程仓库地址
+  git remote remove origin #取消与远程仓库的绑定
+  git remote add <地址> #新增远程仓库绑定
+```
+### Atom易忘记的快捷键 ###
+
+```
+  在深的目录下快速折叠 H
+  选择括号中的内容    ctrl+alt+,
+  打开关闭treeView   ctrl+|
+  聚焦到treeView或者编辑器  alt+|
+  在treeView中选中当前打开文件 shift + ctrl + \
+```
+
