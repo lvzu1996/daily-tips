@@ -134,15 +134,14 @@ getWindowH()
 ```
 
 ### \_\_proto\_\_ 与prototype ###
->#### 基本概念:当我们访问一个对象的属性 时，如果这个对象内部不存在这个属性，那么他就会去__proto__里找这个属性，这个__proto__又会有自己的__proto__，于是就这样 一直找下去，也就是我们平时所说的原型链的概念.
->```
-> p.Say()
-> 若P没有Say这个function
-> 就从p.__proto__ 里找，即p.__proto__.Say()
-> 再找不到以此类推
-> p.__proto__.__proto__.Say()
-> ```
 
+ 基本概念:当我们访问一个对象的属性 时，如果这个对象内部不存在这个属性，那么他就会去__proto__里找这个属性，这个__proto__又会有自己的__proto__，于是就这样 一直找下去，也就是我们平时所说的原型链的概念.
+
+如p.Say()
+ 若P没有Say这个function
+ 就从p.\_\_proto\_\_ 里找，即p.\_\_proto\_\_.Say()
+ 再找不到以此类推
+ p.\_\_proto\_\_.\_\_proto\_\_.Say()
 
 
   <font color=#58B7FF size=4 face="黑体">example1:</font>
@@ -151,7 +150,8 @@ getWindowH()
 	var p = new Person()
 	p.__proto__ === Person.prototype //true
 ```
->上面这个例子得出一个概念，实例的__proto__等于类的prototype
+#### example1过程分析: 
+上面这个例子得出一个概念，实例的__proto__等于类的prototype
   
   <font color=#58B7FF size=4 face="黑体">example2:</font>
 ```javascript
@@ -197,7 +197,35 @@ getWindowH()
   p.\_\_proto\_\_ == Programmer.prototype    
   所以 p.Say()时，先找p自身没有Say方法，  
   然后找p.\_\_proto\_\_ 即 Programmer.prototype没有say方法  
-  最后找p.\_\_proto\_\_.\_\_proto\_\_ 即   Programmer.prototype.\_\_proto\_\_ --> Person.prototype，发现了Say方法  
+  最后找p.\_\_proto\_\_.\_\_proto\_\_ 即   Programmer.prototype.\_\_proto\_\_ --> Person.prototype，发现/了Say方法  
+  
+### if的一种简略写法 ###
+```javascript
+var [a,b] = [1,2]
+var myF = function(){
+  console.log(1);
+}
+
+// 正常写法
+if(a==b){
+    myF()
+}
+// 简洁写法
+a==b && myF()
+```
+这种简洁写法在上层已经有if的情况下比较好用,或在多种if判断下的赋值  
+如这种需求: 如果金额等于0显示0个￥，大于0显示1个￥，大于5显示2个￥，大于10显示3个￥  
+则可以简洁地写成:  
+```javascript
+var count = (money > 10 && 3) || (money > 5 && 2) || (money > 0 && 1) || 0
+```
+#### __补充__ ###
+如果现在的需求是：  
+金额等于0显示0个，金额等于5显示1个，金额等于10显示2个，等于15显示3个,其他显示0个  
+则还有更简单的写法：
+```javascript
+var count={'0':0,'5':1,'10':2,'15':3}[money] || 0;
+```
 
 
   
