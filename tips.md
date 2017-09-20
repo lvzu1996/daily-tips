@@ -112,3 +112,93 @@ getWindowH()
   在treeView中选中当前打开文件 shift + ctrl + \
 ```
 
+## _2017/9/20_ ##
+### 判断访问设备是手机还是pc ###
+```javascript
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+    var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+    var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+    var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+    var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+
+    if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+      console.log("phone");
+    } else {
+      console.log('pc');
+    }
+
+```
+
+### \_\_proto\_\_ 与prototype ###
+>#### 基本概念:当我们访问一个对象的属性 时，如果这个对象内部不存在这个属性，那么他就会去__proto__里找这个属性，这个__proto__又会有自己的__proto__，于是就这样 一直找下去，也就是我们平时所说的原型链的概念.
+>```
+> p.Say()
+> 若P没有Say这个function
+> 就从p.__proto__ 里找，即p.__proto__.Say()
+> 再找不到以此类推
+> p.__proto__.__proto__.Say()
+> ```
+
+
+
+  <font color=#58B7FF size=4 face="黑体">example1:</font>
+```javascript
+	var Person = function () { }
+	var p = new Person()
+	p.__proto__ === Person.prototype //true
+```
+>上面这个例子得出一个概念，实例的__proto__等于类的prototype
+  
+  <font color=#58B7FF size=4 face="黑体">example2:</font>
+```javascript
+  var Person = function () {};
+	Person.prototype.Say = function () {
+	 alert("Person say");
+	}
+	var p = new Person();
+	p.Say();
+```
+#### example2过程分析:  
+  p.say()时p没有say，所以去p.__proto__里找,  
+  p.__proto__ == Person.prototype  
+  所以p.Say() --> p.__proto__.say -->   Person.prototype.Say()  
+
+  <font color=#58B7FF size=4 face="黑体">example3:</font>
+```javascript
+	var Person = function () { };
+		Person.prototype.Say = function () {
+		alert("Person say");
+	}
+	Person.prototype.Salary = 50000;
+ 
+	var Programmer = function () { };
+	Programmer.prototype = new Person();
+	Programmer.prototype.WriteCode = function () {
+		alert("programmer writes code");
+	};
+ 
+	Programmer.prototype.Salary = 500;
+ 
+	var p = new Programmer();
+	p.Say();
+	p.WriteCode();
+	console.log(p.Salary);
+```
+
+#### example3过程分析:  
+ Programmer.prototype = new Person();  
+ 根据上面的推论，得出  
+  Programmer.prototype.\_\_proto\_\_ == Person.prototype  
+  p = new Programmer()  
+  p.\_\_proto\_\_ == Programmer.prototype    
+  所以 p.Say()时，先找p自身没有Say方法，  
+  然后找p.\_\_proto\_\_ 即 Programmer.prototype没有say方法  
+  最后找p.\_\_proto\_\_.\_\_proto\_\_ 即   Programmer.prototype.\_\_proto\_\_ --> Person.prototype，发现了Say方法  
+
+
+  
+
