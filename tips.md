@@ -1,6 +1,6 @@
 # **lvzu'daily tips**
 
-## >make progress everyday
+##   make progress everyday
 
 ## _2017/9/18_
 
@@ -340,9 +340,9 @@ calc('33010220090101493')
 ```
 ## _2017/9/22_
 
-### 浅谈ArrayBuffer和各种视图类 ###
+### _浅谈ArrayBuffer和各种视图类_ ###
 
-####先讲ArrayBuffer  
+#### 先讲ArrayBuffer  
 javascript 中用数组来储存长度较小的数据，而因为数组的一些缺陷导致  
 array用于储存较大长度的数据时的性能不忍直视，于是乎，arraybuffer就这样出现了  
 ArrayBuffer对象被用来表示一个通用的，固定长度的二进制数据缓冲区，__不能被直接读写__  
@@ -351,7 +351,7 @@ ArrayBuffer对象被用来表示一个通用的，固定长度的二进制数据
     var arrBuffer = new ArrayBuffer (length)
  ```
  其二，既然不能读写，那我们要如何去使用呢，这就要引出各种buffer类型化的数组了
-####TypedArray
+#### TypedArray
 光说无益，先全部写出来，你肯定见过一些
 ```javascript
 Int8Array(); 
@@ -367,11 +367,11 @@ Float64Array();
 庞大的TypedArray家族，先只写两个比较常用的Uint8Array和Uint32Array(其他没踩过坑)
 
 Uint8Array是一个数组，而且数组中储存的是不带符号的8位整数，  
-也就是0~2^8-1 所以可以写 Uint8Array[index]=(0~255) 但是写256就不行了
-同理，Uint32Array保存了32位不带符号整数,也就是Uint32Array[index] 可以等于(0~2^32-1)
+也就是0-2^8-1 所以可以写 Uint8Array[index]=(0~255) 但是写256就不行了
+同理，Uint32Array保存了32位不带符号整数,也就是Uint32Array[index] 可以等于(0-2^32-1)
 
 
-####代码
+#### 代码
 ```javascript
 var arrayBuffer = new ArrayBuffer(16)
 
@@ -403,7 +403,7 @@ var arrayBuffer = new ArrayBuffer(16)
 ```
 分析：Uint32Array保存的是32位整数，也就是2^32，原数据是2^(16\*8),所以u32a[index]对应的就是2^(32\*index)大小的数
 
-### 一段语音数据化的js代码，接收音频文件arraybuffer，输出一个元素为Uint8Array的数组 ###
+### __一段语音数据化的js代码，接收音频文件arraybuffer，输出一个元素为Uint8Array的数组__ ###
 input:ArrayBuffer  
 output:array[Uint8Array,Uint8Array...]  
 
