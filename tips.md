@@ -408,7 +408,163 @@ input:ArrayBuffer
 output:array[Uint8Array,Uint8Array...]  
 
 代码地址
- [语音分析模块](https://github.com/lvzu1996/my-utils/blob/master/analyse.js/)
+ [语音分析模块](https://github.com/lvzu1996/my-utils/tree/master/voiceAnalyser)
+
+## _2017/9/25_
+
+### typeof的一个坑
+```javascript
+  typeof(new Array()) //object
+  typeof(null) //object
+  
+  // 又因为typeof(new Array())==object
+  if(new Array()) && if([]) // 都是成立的
+  
+```
+
+### IIFE --- 立即执行函数
+```javascript
+
+for(var i = 0; i < 5; i++) {
+	(function(i){
+		setTimeout(function () {
+			console.log(i);
+		},1000)
+	})(i)
+}
+//0 1 2 3 4 
+```
+
+### 严格模式的一些应用较多的地方
+
+- 变量必须声明才能使用
+```javascript
+var myF = function () {
+  b = 1
+}
+
+"use strict"
+var myF = function () {
+  b = 1 
+}
+myF()//报错
+```
+-  函数必须声明在顶层
+```javascript
+  "use strict";
+　　if (true) {
+　　　　function f() { } // 语法错误
+　　}
+　　for (var i = 0; i < 5; i++) {
+　　　　function f2() { } // 语法错误
+　　}
+```
+
+- 重要的保留字不能作为变量名  
+implements, interface, let, package, private, protected, public, static, yield
+
+- eval有了属于自己的作用域
+```javascript
+    "use strict";
+　　var x = 2;
+　　console.info(eval("var x = 5; x")); // 5
+　　console.info(x); // 2
+    
+    
+  　var x = 2;
+　　console.info(eval("var x = 5; x")); // 5
+　　console.info(x); // 5
+```
+
+### Object常用方法解析
+#### - Object.assign  
+ 把从第二开始的参数的所有属性复制到第一个类上
+```javascript
+var first = {name : 'kong'};  
+var last = {age : 18};  
+var third = {gender: "男"}
+var person = Object.assign(first, last,third);  
+console.log(person);  //{ name: 'kong', age: 18, gender: '男' }
+{ name: 'kong', age: 18, gender: '男' }//{ name: 'kong', age: 18, gender: '男' }
+{ name: 'kong', age: 18, gender: '男' }
+
+console.log(first);
+
+```
+#### - Object.freeze Object.keys Object.values
+```javascript
+var a = {name : 'kong', age : 18};  
+Object.freeze(a);  
+var b = {
+	gender:'18'
+}
+Object.assign(a,b)//报错
 
 
+//Object.keys
+var obj = { a: '1', b: 2 }; 
+console.log(Object.keys(obj));//[ 'a', 'b' ]
 
+//Object.values
+var obj = { a: '1', b: 2 }; 
+console.log(Object.values(obj));//[ '1', 2 ]
+```
+
+#### - Object.defineProperties
+```javascript
+var a = {
+	// name:"kong",
+	// job:"student"
+};  
+
+//Object.defineProperties函数，可添加多个属性  
+Object.defineProperties(a, {  
+    name : {  
+        value : 'kong',  
+        enumerable : true  
+    },  
+    job : {  
+        value : 'student',  
+        enumerable : false
+    }  
+})  
+
+console.log(a);
+```
+
+#### - Object.hasOwnProperty
+```javascript
+//确定某个对象是否具有带指定名称的属性，有的话返回true，否则false  
+//该方法不会检查对象原型链中的属性  
+var s = new String('123');  
+console.log(s.hasOwnProperty('split'));         //false  
+console.log(String.prototype.hasOwnProperty('split'));      //true  
+```
+
+#### - Object.create
+和new不同，create是继承
+```javascript
+var a = {x:1};
+var b = Object.create(a);
+console.log(b);//输出：{};
+console.log(b.__proto__);//输出：{x:1}
+// 第二种：
+b =new object(a)
+connsole.log(b);//输出：{x:1}
+congsole.log(b.__proto__);//输出：{}
+只要注意区分__proto__和prototype就可以了，希望对你有帮助
+
+```
+
+#### - Object.entries
+输出一个Array ，每个元素是个长度为2的数组即[key,value]
+```javascript
+var obj = { foo: 'bar', baz: 42 }; 
+console.log(Object.entries(obj))// [ [‘foo’, ‘bar’], [‘baz’, 42] ]
+
+Object.defineProperty(obj,'foo',{
+	enumerable:false
+})
+
+console.log(Object.entries(obj)); //[[‘baz’, 42]]
+```
